@@ -10,7 +10,7 @@ typedef struct stack stack_t;
 typedef {{type}} (*cloneFn)(void *);
 typedef void (*freeFn)(void *);
 
-typedef struct stack_params {
+typedef struct {
     cloneFn clone;
     freeFn free;
 } stack_params_t;
