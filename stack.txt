@@ -1,0 +1,97 @@
+#include <assert.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include "stack_{{suffix}}.h"
+
+typedef struct node node_t;
+
+struct node {
+    {{type}} data;
+    node_t *next;
+};
+
+struct stack {
+    node_t *top;
+    cloneFn clone;
+    freeFn free;
+};
+
+stack_t * stack_new(stack_params_t params)
+{
+    stack_t *s = malloc(sizeof(stack_t));
+    if (!s) {
+        return s;
+    }
+    
+    s->top = NULL;
+    s->clone = params.clone;
+    s->free = params.free;
+    
+    return s;
+}
+
+void stack_free(void *self)
+{
+    freeFn fn = ((stack_t *) self)->free;
+    node_t *p = ((stack_t *) self)->top;
+    node_t *temp;
+    while (p) {
+        temp = p;
+        p = p->next;
+        if (fn) {
+            fn((void *) temp->data);
+        }
+        free(temp);
+    }
+    
+    free(self);
+}
+
+{{type}} stack_peek(stack_t *self)
+{
+    assert(self);
+    
+    if (self->clone) {
+        return self->clone(self->top->data);
+    }
+    
+    return self->top->data;
+}
+
+bool stack_push(stack_t *self, {{type}} data)
+{
+    assert(self);
+    
+    node_t *n = malloc(sizeof(node_t));
+    if (!n) {
+        return false;
+    }
+    
+    n->data = data;
+    n->next = self->top;
+    self->top = n;
+    
+    return true;
+}
+
+{{type}} stack_pop(stack_t *self)
+{
+    assert(self && self->top);
+    
+    {{type}} out;
+    if (self->clone) {
+        out = self->clone(self->top->data);
+    }
+    else {
+        out = self->top->data;
+    }
+    
+    node_t *p = self->top;
+    self->top = self->top->next;
+    if (self->free) {
+        self->free(p->data);
+    }
+    free(p);
+    
+    return out;
+}

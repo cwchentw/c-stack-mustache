@@ -1,0 +1,24 @@
+#ifndef STACK_H
+#define STACK_H
+
+#include <stdbool.h>
+#include <stdlib.h>
+
+{{alias}}
+
+typedef struct stack stack_t;
+typedef {{type}} (*cloneFn)(void *);
+typedef void (*freeFn)(void *);
+
+typedef struct stack_params {
+    cloneFn clone;
+    freeFn free;
+} stack_params_t;
+
+stack_t * stack_new(stack_params_t params);
+void stack_free(void *self);
+{{type}} stack_peek(stack_t *self);
+bool stack_push(stack_t *self, {{type}} data);
+{{type}} stack_pop(stack_t *self);
+
+#endif

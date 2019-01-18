@@ -1,0 +1,6 @@
+{
+    "alias": "typedef struct { int data; } int_obj_t;",
+    "type": "int_obj_t *",
+    "data_type": "int",
+    "suffix": "obj"
+}
