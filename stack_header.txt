@@ -6,9 +6,15 @@
 
 {{alias}}
 
-typedef struct stack stack_t;
+#ifndef cloneFn
 typedef {{type}} (*cloneFn)(void *);
+#endif
+
+#ifndef freeFn
 typedef void (*freeFn)(void *);
+#endif
+
+typedef struct stack stack_t;
 
 typedef struct {
     cloneFn clone;
