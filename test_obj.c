@@ -15,7 +15,7 @@ int_obj_t * obj_new(int data)
     return o;
 }
 
-int_obj_t * obj_clone(void *obj)
+void * obj_clone(void *obj)
 {
     return obj_new(((int_obj_t *) obj)->data);
 }

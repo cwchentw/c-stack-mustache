@@ -14,19 +14,19 @@ extern "C" {
 
 {{alias}}
 
-#ifndef cloneFn
-typedef {{type}} (*cloneFn)(void *);
+#ifndef clone_fn
+typedef void * (*clone_fn)(void *);
 #endif
 
-#ifndef freeFn
-typedef void (*freeFn)(void *);
+#ifndef free_fn
+typedef void (*free_fn)(void *);
 #endif
 
 typedef struct stack stack_t;
 
 typedef struct {
-    cloneFn clone;
-    freeFn free;
+    clone_fn clone;
+    free_fn free;
 } stack_params_t;
 
 stack_t * stack_new(stack_params_t params);

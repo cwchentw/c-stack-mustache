@@ -12,8 +12,8 @@ struct node {
 
 struct stack {
     node_t *top;
-    cloneFn clone;
-    freeFn free;
+    clone_fn clone;
+    free_fn free;
 };
 
 stack_t * stack_new(stack_params_t params)
@@ -32,7 +32,7 @@ stack_t * stack_new(stack_params_t params)
 
 void stack_free(void *self)
 {
-    freeFn fn = ((stack_t *) self)->free;
+    free_fn fn = ((stack_t *) self)->free;
     node_t *p = ((stack_t *) self)->top;
     node_t *temp;
     while (p) {
@@ -41,7 +41,7 @@ void stack_free(void *self)
         if (fn) {
             fn((void *) temp->data);
         }
-        free(temp);
+        free((void *) temp);
     }
     
     free(self);
@@ -52,7 +52,7 @@ void stack_free(void *self)
     assert(self);
     
     if (self->clone) {
-        return self->clone(self->top->data);
+        return self->clone((void *) self->top->data);
     }
     
     return self->top->data;
@@ -80,7 +80,7 @@ bool stack_push(stack_t *self, {{type}} data)
     
     {{type}} out;
     if (self->clone) {
-        out = self->clone(self->top->data);
+        out = self->clone((void *) self->top->data);
     }
     else {
         out = self->top->data;
@@ -89,7 +89,7 @@ bool stack_push(stack_t *self, {{type}} data)
     node_t *p = self->top;
     self->top = self->top->next;
     if (self->free) {
-        self->free(p->data);
+        self->free((void *) p->data);
     }
     free(p);
     
