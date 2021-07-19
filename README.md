@@ -12,4 +12,4 @@ We made the templates for the header and the code of a stack, from which generat
 
 ## Copyright
 
-2019, Michael Chen; Apache 2.0
+Copyright (c) 2019 Michelle Chen. Licensed under Apache 2.0
